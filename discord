@@ -1,0 +1,34 @@
+import discord
+from discord.ext import commands
+
+# Botun komutlarını ve eventlerini yöneteceğimiz client nesnesi
+intents = discord.Intents.default()
+intents.message_content = True  # Mesaj içeriklerini okumak için izin
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+# Bot etkinleştiğinde çalışan fonksiyon
+@bot.event
+async def on_ready():
+    print(f'{bot.user} olarak giriş yaptım!')
+
+# Mesajlara yanıt verecek basit bir event
+@bot.event
+async def on_message(message):
+    # Botun kendi mesajlarına yanıt vermemesi için kontrol
+    if message.author == bot.user:
+        return
+
+    if message.content.lower() == 'Kendi yaşam tarzımı çevre dostu hale getirmek için neler yapabilirim? Atıkları azaltmanın kolay yolları var mı?':
+        await message.channel.send('Kendi yaşam tarzını çevre dostu hale getirmek için google amcadan yardım alıp çevre kirliliğini azltmak için neler yapmalıyım diye sorabilirsin'):
+    elif message.content.lower() == 'Benim evde çok çöpüm var ama çöplerimi nasıl yararlı kullancağımı bilmiyorum.Bunun için neler yapmalıyım?':
+""      await message.chanel.send('Çöplerinizi değerlendirmek için geri dönüşüm yapabilir, organik atıklardan kompost üretebilir veya kullanılabilir eşyaları bağışlayabilirsiniz. Daha fazla bilgi isterseniz size yardımcı olabilirim!')  
+# Diğer komutların da çalışabilmesi için
+    await bot.process_commands(message)
+
+# Basit bir komut ekleyelim
+@bot.command()
+async def selam(ctx):
+    await ctx.send("Selam! Nasılsınız?")
+
+# Botu çalıştırmak için token'ınızı buraya yapıştırın
+bot.run('YOUR_BOT_TOKEN')
